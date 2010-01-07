@@ -75,23 +75,23 @@ Here we go on:
 
 <pre><code>
 irb(main):003:0> a1=ErlixAtom.new("atom1")
-=> atom1
+=> #<ErlixAtom:atom1>
 irb(main):004:0> a2=ErlixAtom.new("atom2")
-=> atom2
+=> #<ErlixAtom:atom2>
 irb(main):005:0> f=ErlixFloat.new(17.0)
-=> 17.000000
+=> #<ErlixFloat:17.000000>
 irb(main):006:0> b=ErlixBinary.new("data\0data")
-=> #Bin
+=> #<ErlixBinary:#Bin>
 irb(main):007:0> b.data
 => "data\000data"
 irb(main):008:0> i=ErlixInt.new(101)
-=> 101
+=> #<ErlixInt:101>
 irb(main):009:0> t=ErlixTuple.new([a1,f,b,a2,i])
-=> {atom1,17.000000,#Bin,atom2,101}
+=> #<ErlixTuple:{atom1,17.000000,#Bin,atom2,101}>
 irb(main):010:0> list=ErlixList.new([a1,i,t])
-=> [atom1,101,{atom1,17.000000,#Bin,atom2,101}]
+=> #<ErlixList:[atom1,101,{atom1,17.000000,#Bin,atom2,101}]>
 irb(main):011:0> t[2]
-=> 17.000000
+=> #<ErlixFloat:17.000000>
 irb(main):012:0> t[2].class
 => ErlixFloat
 irb(main):013:0> t[3].class
@@ -99,11 +99,11 @@ irb(main):013:0> t[3].class
 irb(main):014:0> t.nth(3)==t[3]
 => true
 irb(main):015:0> list.head
-=> atom1
+=> #<ErlixAtom:atom1>
 irb(main):016:0> list.tail
-=>[101,{atom1,17.000000,#Bin,atom2,101}]
+=> #<ErlixList:[101,{atom1,17.000000,#Bin,atom2,101}]>
 irb(main):017:0> list2=list.cons(b)
-=> [#Bin,atom1,101,{atom1,17.000000,#Bin,atom2,101}]
+=> #<ErlixList:[#Bin,atom1,101,{atom1,17.000000,#Bin,atom2,101}]>
 </code></pre>
 
 <a name="fn1">Some Ruby-Type var can be auto-converted to particular Erlang-Type:</a>
@@ -119,7 +119,7 @@ See below
 
 <pre><code>
 irb(main):016:0> c=ErlixList.new(["string-to-list",1,:symbol_to_atom,1.00])
-=> ["string-to-list",1,symbol_to_atom,1.000000]
+=> #<ErlixList:["string-to-list",1,symbol_to_atom,1.000000]>
 irb(main):017:0> c.head.class
 => ErlixList
 irb(main):019:0>
@@ -128,30 +128,30 @@ irb(main):019:0>
 <a name="fn2">Use singleton method [] to create ErlixTuple/ErlixList</a>
 <pre><code>
 irb(main):019:0> c=ErlixList["string-to-list",1,:symbol_to_atom,1.00]
-=> ["string-to-list",1,symbol_to_atom,1.000000]
+=> #<ErlixList:["string-to-list",1,symbol_to_atom,1.000000]>
 irb(main):020:0> t=ErlixTuple["string-to-list",1,:symbol_to_atom,1.00]
-=> {"string-to-list",1,symbol_to_atom,1.000000}
+=> #<ErlixTuple:{"string-to-list",1,symbol_to_atom,1.000000}>
 irb(main):021:0> t[1]
-=> "string-to-list"
+=> #<ErlixList:"string-to-list">
 irb(main):022:0> t[3]
-=> symbol_to_atom
+=> #<ErlixAtom:symbol_to_atom>
 irb(main):023:0> sl=%w[abc def xyz]
-=> ["abc", "def", "xyz"]
+=> #<ErlixList:["abc", "def", "xyz"]>
 irb(main):024:0> ErlixTuple[*sl]
-=> {"abc","def","xyz"}
+=> #<ErlixTuple:{"abc","def","xyz"}>
 </code></pre>
 
 And we can use @match@ to test a ErlixTerm's format, use @mget@ to get a particular ErlixTerm inside a ErlixTerm:
 
 <pre><code>
 irb(main):023:0> list2
-=> [#Bin,atom1,101,{atom1,17.000000,#Bin,atom2,101}]
+=> #<ErlixList:[#Bin,atom1,101,{atom1,17.000000,#Bin,atom2,101}]>
 irb(main):024:0> list2.match("[B,Atom,101,Tuple]")
 => true
 irb(main):025:0> list2.match("[nomatch,B,Atom,101,Tuple]")
 => false
 irb(main):027:0> t2=list2.mget("[B,Atom,101,Tuple]","Tuple")
-=> {atom1,17.000000,#Bin,atom2,101}
+=> #<ErlixTuple:{atom1,17.000000,#Bin,atom2,101}>
 </code></pre>
 
 h3. Play with the Real-Erlang-Node
