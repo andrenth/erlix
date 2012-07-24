@@ -13,8 +13,9 @@ erlix-0.5 changlong [not finished]
 20090430 update
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* features:
-  - Type auto-convert[1]
+* features
+  
+  - Type auto-convert
   - [] singleton method for ErlixTuple and ErlixList
   - add ErlixTerm.to_s, remove ErlixTerm.puts
 
@@ -22,9 +23,11 @@ erlix-0.3 changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * bugfix:
+  
   - IO block bug in ErlixConnection#erecv
 
 * feature:
+  
   - ErlixList#new("string")
   - ErlixConnection#close
   - ErlixConnection#closed?
@@ -143,7 +146,7 @@ Some Ruby-Type var can be auto-converted to particular Erlang-Type
    1.9.3-p194 :034 > 
 
 
-Use singleton method [] to create ErlixTuple/ErlixList
+Use singleton method [] to create Erlix::Tuple/Erlix::List
 
 ::
 
@@ -163,8 +166,8 @@ Use singleton method [] to create ErlixTuple/ErlixList
 
 
 
-And we can use ``match`` to test a ErlixTerm's format, use ``mget`` to get
-a particular ErlixTerm inside a ErlixTerm: 
+And we can use ``match`` to test a Erlix::Term's format, use ``mget`` to get
+a particular Erlix::Term inside another Erlix::Term: 
 
 ::
 
@@ -180,6 +183,7 @@ a particular ErlixTerm inside a ErlixTerm:
 
 
 Play with the Real-Erlang-Node
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 First write a erlang module for our test:
 
@@ -233,11 +237,11 @@ The time we write ruby code with erlix now:
 
    require "erlix"
    
-   # init ErlixNode,
-   #  the first argument is the short-name of the ErlixNode
+   # init Erlix::Node,
+   #  the first argument is the short-name of the Erlix::Node
    #  the second argument is the erlang cookie, use nil it's will read ~/.erlang.cookie
-   # after init, my ErlixNode's name is inited to "ruby@kdr2-pc"
-   ErlixNode.init("ruby",nil)
+   # after init, my Erlix::Node's name is inited to "ruby@kdr2-pc"
+   Erlix::Node.init("ruby",nil)
 
    # connect to the real Erlang-Node:
    c=Erlix::Connection.new("foo@kdr2-pc")
@@ -247,7 +251,7 @@ The time we write ruby code with erlix now:
    # we will use this Pid as the FromPid
    p=Erlix::Pid.new(c)
 
-   # make a ErlixTuple {Pid,test_atom} and send it to the real erlang-node
+   # make a Erlix::Tuple {Pid,test_atom} and send it to the real erlang-node
    c.esend("my_pid",Erlix::Tuple.new([p,Erlix::Atom.new("test_atom")]))
    puts "send ok"
 
@@ -278,7 +282,7 @@ Run the test code:
    receiving
    ERL_SEND
    test_atom
-   ErlixMessage
+   Erlix::Message
    nil
    <3.6.3>
    ...
@@ -293,16 +297,27 @@ The output of erlang:
    From:[<6027.3.6>], MSG From Ruby:[test_atom]
    (foo@kdr2-pc)3>
 
-**Note** : the class ErlixMessage:
-The method ErlixConnection#erecv return an instance of ErlixMessage, ErlixMessage represents the struct ErlMessge in erl_interface,it has several fields:
-# type
-# msg
-# from
-# to
-You can call @ErlixMessage#mtype@,@ErlixMessage#message@,@ErlixMessage#from@,@ErlixMessage#to@ to get them.
+   
+
+
+About the class Erlix::Message
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The method ``Erlix::Connection#erecv`` return an instance of ``Erlix::Message``,
+``Erlix::Message`` represents the struct ``ErlMessge`` in erl_interface,it has several fields:
+    
+    - type
+    - msg
+    - from
+    - to
+     
+You can call ``Erlix::Message#mtype``, ``Erlix::Message#message``, ``Erlix::Message#from``,
+``Erlix::Message#to`` to get them.
+    
 There's the description of ErlMessage from the erl_connect manual:
 
-<pre><code>
+::
+   
      This function receives the message into the specified buffer, and decodes into the (ErlMessage *) emsg.
 
               fd is an open descriptor to an Erlang connection.
@@ -320,8 +335,8 @@ There's the description of ErlMessage from the erl_connect manual:
                 ETERM *from;
                 char to_name[MAXREGLEN];
               } ErlMessage;
-
-   Note:
+              
+     Note:
        The definition of ErlMessage has changed since earlier versions of Erl_Interface.
 
        type identifies the type of message, one of ERL_SEND, ERL_REG_SEND, ERL_LINK, ERL_UNLINK and ERL_EXIT.
@@ -335,25 +350,30 @@ There's the description of ErlMessage from the erl_connect manual:
 
        If type contains ERL_EXIT, then this indicates that a link has been broken. In this case, emsg->to and emsg->from contain the pids
        of the linked processes, and emsg->msg contains the reason for the exit.
-</code></pre>
-
-h3. Erlix RPC
-
-<pre><code>
-c=ErlixConnection.new("foo@kdr2-pc")
-
-#rpc call
-fmt=ErlixList.new("abc~n")
-tmp=ErlixList.new(nil)
-args=ErlixList.new([fmt,tmp])
-ret=c.rpc("io","format",args)
-puts ret;
-puts ret.class
-</code></pre>
-
-**Note** : Before you make a @ErlixConnection#rpc@ call,  @ErlixConnection#erecv@ and @ErlixConnection#esend@ calls must be stopped(There may be an thread runing and blocking on erecv call,you can make rpc-thead and erecv-thread as two mutual exclusive threads). After the ErlixConnection#rpc returned @ErlixConnection#erecv@ and @ErlixConnection#esend@ can be called again.
 
 
-**EOF**
+Erlix RPC
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+   
+   c=Erlix::Connection.new("foo@kdr2-pc")
+   
+   #rpc call
+   fmt=Erlix::List.new("abc~n")
+   tmp=Erlix::List.new(nil)
+   args=Erlix::List.new([fmt,tmp])
+   ret=c.rpc("io","format",args)
+   puts ret;
+   puts ret.class
+
+
+.. Note::
+
+   Before you make a ``Erlix::Connection#rpc`` call,  ``Erlix::Connection#erecv`` and
+   ``Erlix::Connection#esend`` calls must be stopped(There may be an thread runing and
+   blocking on erecv call,you can make rpc-thead and erecv-thread as two mutual exclusive
+   threads). After the ``Erlix::Connection#rpc``  call returned, ``Erlix::Connection#erecv``
+   and ``Erlix::Connection#esend`` can be called again.
 
 
