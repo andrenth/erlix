@@ -227,6 +227,7 @@ name is "foo@kdr2-pc".
 The time we write ruby code with erlix now:
 
 ::
+   
    #!/usr/bin/ruby
    # -*- coding: utf-8 -*-
 
