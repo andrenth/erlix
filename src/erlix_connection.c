@@ -138,12 +138,10 @@ static VALUE erlix_connection_recv(VALUE self){
         return Qnil;
     }
     for(;;){
-        /*
         //bugfixed! for 1.8.7 thread block!
         if(rb_io_wait_readable(con->sock_fd)!=Qtrue){
             rb_thread_wait_fd(con->sock_fd);
         }
-        */
         int ret;
         VALUE m;
         ErlMessage *newm;
