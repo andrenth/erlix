@@ -16,6 +16,18 @@
 #define RUBY_VERSION_MINOR 8
 #endif
 
+
+#ifndef RSTRING_LEN
+  #define RSTRING_LEN(x) (RSTRING(x)->len)
+  #define RSTRING_PTR(x) (RSTRING(x)->ptr)
+#endif
+
+#ifndef RARRAY_LEN
+  #define RARRAY_LEN(x) (RARRAY(x)->len)
+  #define RARRAY_PTR(x) (RARRAY(x)->ptr)
+#endif
+
+
 /*********** erlix_term  ***********/
 
 #define TYPE_ATOM        (1<<0)  //DONE
