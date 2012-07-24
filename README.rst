@@ -4,7 +4,7 @@ Erlix
 Changelog
 ------------------------------------------------------------
 
-erlix-05. changlong
+erlix-0.5 changlong [not finished]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Ruby 1.9.x support
@@ -13,23 +13,23 @@ erlix-05. changlong
 20090430 update
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  * features:
-    * Type auto-convert[1]
-    * [] singleton method for ErlixTuple and ErlixList
-    * add ErlixTerm.to_s, remove ErlixTerm.puts
+* features:
+  - Type auto-convert[1]
+  - [] singleton method for ErlixTuple and ErlixList
+  - add ErlixTerm.to_s, remove ErlixTerm.puts
 
 erlix-0.3 changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  * bugfix:
-    * IO block bug in ErlixConnection#erecv
+* bugfix:
+  - IO block bug in ErlixConnection#erecv
 
-  * feature:
-    * ErlixList#new("string")
-    * ErlixConnection#close
-    * ErlixConnection#closed?
-    * ErlixConnection#rpc("module","function",ErlixTermList)
-    * ErlixConnection#peer
+* feature:
+  - ErlixList#new("string")
+  - ErlixConnection#close
+  - ErlixConnection#closed?
+  - ErlixConnection#rpc("module","function",ErlixTermList)
+  - ErlixConnection#peer
 
 
 
@@ -125,13 +125,14 @@ Here we go on:
 
 
 Some Ruby-Type var can be auto-converted to particular Erlang-Type
-
-|Ruby-Type | -> | Erlang-Type   |
-|FixNum    | -> | Erlix::Int    |
-|Float     | -> | Erlix::Float  |
-|String    | -> | Erlix::List   |
-|Symbol    | -> | Erlix::Atom   |
-
+::
+   
+   |Ruby-Type | -> | Erlang-Type   |
+   |FixNum    | -> | Erlix::Int    |
+   |Float     | -> | Erlix::Float  |
+   |String    | -> | Erlix::List   |
+   |Symbol    | -> | Erlix::Atom   |
+   
 
 ::
 
