@@ -1,0 +1,9 @@
+*.o
+*.a
+*.so
+*.beam
+Makefile
+erlix.bundle
+
+tmp/
+

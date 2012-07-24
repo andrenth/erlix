@@ -14,7 +14,7 @@
 
 #include "erlix_term.h"
 
-#define ERLIX_NODE_MOD "ErlixNode"
+#define ERLIX_NODE_MOD "Node"
 
 extern const char *erl_thisnodename(void);
 extern short erl_thiscreation(void);

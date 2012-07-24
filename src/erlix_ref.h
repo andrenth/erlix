@@ -12,11 +12,11 @@
 #include "erlix_term.h"
 
 
-VALUE erlix_REF_alloc(VALUE klass);
-VALUE erlix_REF_init(VALUE self);
+VALUE erlix_ref_alloc(VALUE klass);
+VALUE erlix_ref_init(VALUE self);
 VALUE erlix_ref_inspect(VALUE self);
-VALUE erlix_REF_etype(VALUE self);
+VALUE erlix_ref_etype(VALUE self);
 
-void init_erlix_REF();
+void init_erlix_ref();
 
 #endif /* ERLIX_REF_H_ */
