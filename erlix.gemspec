@@ -4,7 +4,7 @@ require 'rake'
 
 Gem::Specification.new do |s|
   s.name        = 'erlix'
-  s.version     = '0.5.0'
+  s.version     = '0.5.0a'
   s.summary     = "Run ruby as an Erlang Node!"
   s.description = s.summary
   s.authors     = ["KDr2"]

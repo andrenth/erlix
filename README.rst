@@ -42,6 +42,10 @@ Intsall erlix
 
 On Linux/Unix only, need erlang installed.
 
+``gem install erlix``
+
+OR
+
 ::
    
    unzip erlix-version.zip

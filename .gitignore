@@ -2,6 +2,7 @@
 *.a
 *.so
 *.beam
+*.gem
 Makefile
 erlix.bundle
 
