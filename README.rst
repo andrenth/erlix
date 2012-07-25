@@ -4,12 +4,13 @@ Erlix
 Changelog
 ------------------------------------------------------------
 
-erlix-0.5 changlong [not finished]
+erlix-0.5 changlog [alpha]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Ruby 1.9.x support
 * All classes (Term/Int/List/Tuple/Atom/...) are under the ``Erlix`` module now
-
+* Convenient new for Erlix::List and Erlix::Tuple
+  
 20090430 update
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -45,7 +46,7 @@ On Linux/Unix only, need erlang installed.
    
    unzip erlix-version.zip
    cd erlix-version
-   ruby configure.rb
+   ./configure
    make
    make install
 
@@ -128,6 +129,7 @@ Here we go on:
 
 
 Some Ruby-Type var can be auto-converted to particular Erlang-Type
+
 ::
    
    |Ruby-Type | -> | Erlang-Type   |
@@ -361,7 +363,7 @@ Erlix RPC
    
    #rpc call
    fmt=Erlix::List.new("abc~n")
-   tmp=Erlix::List.new(nil)
+   tmp=Erlix::List.new
    args=Erlix::List.new([fmt,tmp])
    ret=c.rpc("io","format",args)
    puts ret;

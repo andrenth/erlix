@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-#
+#-*- ruby -*-
 # project : erlix
 # author : kdr2
 #
@@ -13,9 +13,14 @@ cmd=[
   "ruby #{mkmf}",
   "--with-ei-dir=#{ei_dir}",
   "--with-cflags=\"-std=c99\"",
-  " --with-ldflags=\"-lei -lerl_interface -lpthread\"",
+  "--with-ldflags=\"-lei -lerl_interface -lpthread\"",
   "--srcdir=#{src_dir}"].join(" ")
 
+env=[
+  "--with-ei-dir=#{ei_dir}",
+  "--with-cflags=\"-std=c99\"",
+  "--with-ldflags=\"-lei -lerl_interface -lpthread\"",
+  "--srcdir=#{src_dir}"].join(" ")
 puts cmd
 puts `#{cmd}`
 
