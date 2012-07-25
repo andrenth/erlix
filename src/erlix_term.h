@@ -79,20 +79,38 @@ extern VALUE erlix_mErlixNode;
                           (TYPE(v)==T_STRING))
 ETERM *erlix_auto_conv(VALUE v);
 
-ErlixTerm* new_erlix_term();
-void free_erlix_term(void* p);
-
 #define IS_ETERM(v) (TYPE(v)==T_DATA && RDATA(v)->dfree==(RUBY_DATA_FUNC)free_erlix_term)
 
+ErlixTerm* new_erlix_term();
+void free_erlix_term(void* ptr);
 VALUE erlix_term(ETERM *term);
-VALUE erlix_term_init_copy(VALUE copy,VALUE orig);
-VALUE erlix_term_to_str(VALUE self);
-VALUE erlix_term_eql(VALUE left,VALUE right);
-VALUE erlix_term_match(VALUE left,VALUE string);
-VALUE erlix_term_mget(VALUE left,VALUE string,VALUE e);
-
 unsigned long erlix_term_type(ETERM *term);
 
-void init_erlix_term();
+
+VALUE erlix_int_alloc(VALUE klass);
+VALUE erlix_uint_alloc(VALUE klass);
+VALUE erlix_float_alloc(VALUE klass);
+VALUE erlix_pid_alloc(VALUE klass);
+VALUE erlix_ref_alloc(VALUE klass);
+VALUE erlix_atom_alloc(VALUE klass);
+VALUE erlix_list_alloc(VALUE klass);
+VALUE erlix_tuple_alloc(VALUE klass);
+VALUE erlix_binary_alloc(VALUE klass);
+VALUE erlix_message_alloc(VALUE klass);
+
+
+void init_erlix_term(VALUE erlix);
+void init_erlix_int(VALUE erlix);
+void init_erlix_uint(VALUE erlix);
+void init_erlix_float(VALUE erlix);
+void init_erlix_pid(VALUE erlix);
+void init_erlix_ref(VALUE erlix);
+void init_erlix_atom(VALUE erlix);
+void init_erlix_list(VALUE erlix);
+void init_erlix_node(VALUE erlix);
+void init_erlix_tuple(VALUE erlix);
+void init_erlix_binary(VALUE erlix);
+void init_erlix_message(VALUE erlix);
+void init_erlix_connection(VALUE erlix);
 
 #endif /* ERLIX_TERM_H_ */

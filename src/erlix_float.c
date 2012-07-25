@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "erlix_float.h"
+#include "erlix_term.h"
 
 VALUE erlix_cErlixFloat;
 
@@ -20,7 +20,7 @@ VALUE erlix_float_alloc(VALUE klass){
     return obj;
 }
 
-VALUE erlix_float_init(VALUE self,VALUE fix){
+static VALUE erlix_float_init(VALUE self,VALUE fix){
     ErlixTerm* efloat;
     double i=NUM2DBL(fix);
     Data_Get_Struct(self,ErlixTerm,efloat);
@@ -29,7 +29,7 @@ VALUE erlix_float_init(VALUE self,VALUE fix){
 }
 
 
-VALUE erlix_float_to_fix(VALUE self){
+static VALUE erlix_float_to_fix(VALUE self){
     ErlixTerm *efloat;
     double l;
     Data_Get_Struct(self,ErlixTerm,efloat);
@@ -37,7 +37,7 @@ VALUE erlix_float_to_fix(VALUE self){
     return rb_float_new(l);
 }
 
-VALUE erlix_float_inspect(VALUE self){
+static VALUE erlix_float_inspect(VALUE self){
     VALUE ret=rb_str_new2("#<Erlix::Float:");
     ID concat=rb_intern("concat");
     rb_funcall(ret,concat,1,rb_funcall(self,rb_intern("to_s"),0));
@@ -45,7 +45,7 @@ VALUE erlix_float_inspect(VALUE self){
     return ret;
 }
 
-VALUE erlix_float_etype(VALUE self){
+static VALUE erlix_float_etype(VALUE self){
     return rb_str_new2("float");
 }
 
@@ -60,3 +60,6 @@ void init_erlix_float(VALUE erlix){
 
     rb_include_module(erlix_cErlixFloat,erlix_mErlixTerm);
 }
+
+
+

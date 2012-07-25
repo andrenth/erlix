@@ -6,16 +6,17 @@
 
 #include <stdlib.h>
 
-#include "erlix_message.h"
+#include "erlix_term.h"
+#include "erlix_node.h"
 
 VALUE erlix_cErlixMessage;
 
-ErlMessage* new_erlix_message(){
+static ErlMessage* new_erlix_message(){
     ErlMessage *ret=(ErlMessage*)malloc(sizeof(ErlMessage));
     return ret;
 }
 
-void free_erlix_message(void *omsg){
+static void free_erlix_message(void *omsg){
     ErlMessage *msg=omsg;
     erl_free_term(msg->msg);
     erl_free_term(msg->from);
@@ -30,7 +31,7 @@ VALUE erlix_message_alloc(VALUE klass){
     return obj;
 }
 
-VALUE erlix_message_init_copy(VALUE copy,VALUE orig){
+static VALUE erlix_message_init_copy(VALUE copy,VALUE orig){
     ErlMessage *tcopy,*tsrc;
     if(copy==orig)return copy;
     if(TYPE(orig)!=T_DATA || RDATA(orig)->dfree==(RUBY_DATA_FUNC)free_erlix_message){
@@ -46,11 +47,11 @@ VALUE erlix_message_init_copy(VALUE copy,VALUE orig){
     return copy;
 }
 
-VALUE erlix_message_etype(VALUE self){
+static VALUE erlix_message_etype(VALUE self){
     return rb_str_new2("ErlMessage");
 }
 
-VALUE erlix_message_mtype(VALUE self){
+static VALUE erlix_message_mtype(VALUE self){
     //ERL_SEND, ERL_REG_SEND, ERL_LINK, ERL_UNLINK and ERL_EXIT
     ErlMessage *msg;
     Data_Get_Struct(self,ErlMessage,msg);
@@ -75,7 +76,7 @@ VALUE erlix_message_mtype(VALUE self){
     }
 }
 
-VALUE erlix_message_message(VALUE self){
+static VALUE erlix_message_message(VALUE self){
     ErlMessage *msg;
     Data_Get_Struct(self,ErlMessage,msg);
     if(msg->type==ERL_LINK || msg->type==ERL_UNLINK){
@@ -84,7 +85,7 @@ VALUE erlix_message_message(VALUE self){
     return erlix_term(erl_copy_term(msg->msg));
 }
 
-VALUE erlix_message_from(VALUE self){
+static VALUE erlix_message_from(VALUE self){
     ErlMessage *msg;
     Data_Get_Struct(self,ErlMessage,msg);
 
@@ -95,7 +96,7 @@ VALUE erlix_message_from(VALUE self){
     return erlix_term(erl_copy_term(msg->from));
 }
 
-VALUE erlix_message_to(VALUE self){
+static VALUE erlix_message_to(VALUE self){
     ErlMessage *msg;
     Data_Get_Struct(self,ErlMessage,msg);
     if(msg->type==ERL_REG_SEND){

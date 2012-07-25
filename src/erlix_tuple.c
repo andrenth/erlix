@@ -4,7 +4,7 @@
  *
  */
 
-#include "erlix_tuple.h"
+#include "erlix_term.h"
 
 VALUE erlix_cErlixTuple;
 
@@ -16,7 +16,7 @@ VALUE erlix_tuple_alloc(VALUE klass){
     return obj;
 }
 
-VALUE erlix_tuple_init(VALUE self,VALUE ary){
+static VALUE erlix_tuple_init(VALUE self,VALUE ary){
     ErlixTerm *tuple;
     VALUE array, e;
     int i;
@@ -57,7 +57,7 @@ VALUE erlix_tuple_init(VALUE self,VALUE ary){
     return self;
 }
 
-VALUE erlix_tuple_create(int argc,VALUE *argv,VALUE klass){
+static VALUE erlix_tuple_create(int argc,VALUE *argv,VALUE klass){
     
     ETERM *rterm=NULL;
     ETERM **tes;
@@ -93,7 +93,7 @@ VALUE erlix_tuple_create(int argc,VALUE *argv,VALUE klass){
     return erlix_term(rterm);
 }
 
-VALUE erlix_tuple_nth(VALUE self,VALUE index){
+static VALUE erlix_tuple_nth(VALUE self,VALUE index){
     ErlixTerm *tuple;
     ETERM *e;
     
@@ -109,7 +109,7 @@ VALUE erlix_tuple_nth(VALUE self,VALUE index){
     return erlix_term(erl_copy_term(e));
 }
 
-VALUE erlix_tuple_to_ary(VALUE self){
+static VALUE erlix_tuple_to_ary(VALUE self){
     ErlixTerm *tuple;
     int len, i;
     ETERM *e;
@@ -126,7 +126,7 @@ VALUE erlix_tuple_to_ary(VALUE self){
 }
 
 
-VALUE erlix_tuple_size(VALUE self){
+static VALUE erlix_tuple_size(VALUE self){
     ErlixTerm *tuple;
     int len;
     
@@ -135,7 +135,7 @@ VALUE erlix_tuple_size(VALUE self){
     return INT2FIX(len);
 }
 
-VALUE erlix_tuple_inspect(VALUE self){
+static VALUE erlix_tuple_inspect(VALUE self){
     VALUE ret=rb_str_new2("#<Erlix::Tuple:");
     ID concat=rb_intern("concat");
     rb_funcall(ret,concat,1,rb_funcall(self,rb_intern("to_s"),0));
@@ -143,7 +143,7 @@ VALUE erlix_tuple_inspect(VALUE self){
     return ret;
 }
 
-VALUE erlix_tuple_etype(VALUE self){
+static VALUE erlix_tuple_etype(VALUE self){
     return rb_str_new2("tuple");
 }
 
@@ -163,3 +163,6 @@ void init_erlix_tuple(VALUE erlix){
 
     rb_include_module(erlix_cErlixTuple,erlix_mErlixTerm);
 }
+
+
+

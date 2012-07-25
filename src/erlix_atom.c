@@ -5,7 +5,7 @@
  *
  */
 
-#include "erlix_atom.h"
+#include "erlix_term.h"
 
 VALUE erlix_cErlixAtom;
 
@@ -18,7 +18,7 @@ VALUE erlix_atom_alloc(VALUE klass){
     return obj;
 }
 
-VALUE erlix_atom_init(VALUE self,VALUE string){
+static VALUE erlix_atom_init(VALUE self,VALUE string){
     ErlixTerm* atom;
     VALUE str=StringValue(string);
     Data_Get_Struct(self,ErlixTerm,atom);
@@ -27,7 +27,7 @@ VALUE erlix_atom_init(VALUE self,VALUE string){
 }
 
 
-VALUE erlix_atom_size(VALUE self){
+static VALUE erlix_atom_size(VALUE self){
     ErlixTerm *atom;
     int l;
     Data_Get_Struct(self,ErlixTerm,atom);
@@ -35,7 +35,7 @@ VALUE erlix_atom_size(VALUE self){
     return INT2FIX(l);
 }
 
-VALUE erlix_atom_inspect(VALUE self){
+static VALUE erlix_atom_inspect(VALUE self){
     VALUE ret=rb_str_new2("#<Erlix::Atom:");
     ID concat=rb_intern("concat");
     rb_funcall(ret,concat,1,rb_funcall(self,rb_intern("to_s"),0));
@@ -43,7 +43,7 @@ VALUE erlix_atom_inspect(VALUE self){
     return ret;
 }
 
-VALUE erlix_atom_etype(VALUE self){
+static VALUE erlix_atom_etype(VALUE self){
     return rb_str_new2("atom");
 }
 
@@ -58,3 +58,5 @@ void init_erlix_atom(VALUE erlix){
 
     rb_include_module(erlix_cErlixAtom,erlix_mErlixTerm);
 }
+
+

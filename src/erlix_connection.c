@@ -7,7 +7,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "erlix_message.h"
+#include "erlix_term.h"
+#include "erlix_node.h"
 #include "erlix_connection.h"
 
 extern ErlixNode* erlix_node;
@@ -28,7 +29,7 @@ void free_erlix_connection(void *econ){
     free(ep);
 }
 
-static VALUE erlix_connection_alloc(VALUE klass){
+VALUE erlix_connection_alloc(VALUE klass){
     ErlixConnection* ec=new_erlix_connection();
     VALUE obj;
     obj=Data_Wrap_Struct(klass,0,free_erlix_connection,ec);

@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "erlix_uint.h"
+#include "erlix_term.h"
 
 VALUE erlix_cErlixUInt;
 
@@ -20,7 +20,7 @@ VALUE erlix_uint_alloc(VALUE klass){
     return obj;
 }
 
-VALUE erlix_uint_init(VALUE self,VALUE fix){
+static VALUE erlix_uint_init(VALUE self,VALUE fix){
     ErlixTerm* euint;
     unsigned int i=FIX2UINT(fix);
     Data_Get_Struct(self,ErlixTerm,euint);
@@ -29,7 +29,7 @@ VALUE erlix_uint_init(VALUE self,VALUE fix){
 }
 
 
-VALUE erlix_uint_to_fix(VALUE self){
+static VALUE erlix_uint_to_fix(VALUE self){
     ErlixTerm *euint;
     unsigned int l;
     Data_Get_Struct(self,ErlixTerm,euint);
@@ -37,7 +37,7 @@ VALUE erlix_uint_to_fix(VALUE self){
     return INT2FIX(l);
 }
 
-VALUE erlix_uint_inspect(VALUE self){
+static VALUE erlix_uint_inspect(VALUE self){
     VALUE ret=rb_str_new2("#<Erlix::UInt:");
     ID concat=rb_intern("concat");
     rb_funcall(ret,concat,1,rb_funcall(self,rb_intern("to_s"),0));
@@ -45,7 +45,7 @@ VALUE erlix_uint_inspect(VALUE self){
     return ret;
 }
 
-VALUE erlix_uint_etype(VALUE self){
+static VALUE erlix_uint_etype(VALUE self){
     return rb_str_new2("unsigned int");
 }
 
@@ -60,3 +60,4 @@ void init_erlix_uint(VALUE erlix){
 
     rb_include_module(erlix_cErlixUInt,erlix_mErlixTerm);
 }
+

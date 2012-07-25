@@ -4,7 +4,7 @@
  *
  */
 
-#include "erlix_list.h"
+#include "erlix_term.h"
 
 VALUE erlix_cErlixList;
 
@@ -18,7 +18,7 @@ VALUE erlix_list_alloc(VALUE klass){
     return obj;
 }
 
-VALUE erlix_list_init(VALUE self,VALUE ary){
+static VALUE erlix_list_init(VALUE self,VALUE ary){
     ErlixTerm *list;
     ETERM **les;
     VALUE e;
@@ -63,7 +63,47 @@ VALUE erlix_list_init(VALUE self,VALUE ary){
     return self;
 }
 
-VALUE erlix_list_create(int argc,VALUE *argv,VALUE klass){
+
+static VALUE erlix_list_init2(int argc, VALUE* argv,VALUE self){
+    ErlixTerm *list;
+    ETERM **les;
+    VALUE e;
+    ErlixTerm *ep;
+    int i;
+    Data_Get_Struct(self,ErlixTerm,list);
+
+    if(argc==0){
+        //empty list
+        list->term=erl_mk_empty_list();
+    }else{
+        //check: all elements' must be ErlixTerm or auto-convertable Type
+        for(i=0;i<argc;i++){
+            e=*(argv+i);
+            if(!IS_ETERM(e) && !CAN_AUTO_CONV(e)){
+                rb_raise(rb_eTypeError,"all list's elements must be ErlixTerm or Auto-Convertable-Type!");
+            }
+        }
+        les=(ETERM**)malloc(sizeof(ETERM*)*argc);
+        for(i=0;i<argc;i++){
+            e=*(argv+i);
+            if(IS_ETERM(e)){
+                Data_Get_Struct(e,ErlixTerm,ep);
+                *(les+i)=erl_copy_term(ep->term);
+            }else{
+                *(les+i)=erlix_auto_conv(e);
+            }
+        }
+        list->term=erl_mk_list(les,argc);
+        //for(i=0;i<RARRAY(ary)->len;i++){
+        //  erl_free_term(*(les+i));
+        //}
+        free(les);
+    }
+    return self;
+}
+
+
+static VALUE erlix_list_create(int argc,VALUE *argv,VALUE klass){
     ETERM *rterm;
     ETERM **les;
     ErlixTerm *ep;
@@ -100,7 +140,7 @@ VALUE erlix_list_create(int argc,VALUE *argv,VALUE klass){
     return erlix_term(rterm);
 }
 
-VALUE erlix_list_to_ary(VALUE self){
+static VALUE erlix_list_to_ary(VALUE self){
     ErlixTerm *list;
     ETERM *hd,*tmp,*ep;
     VALUE ret;
@@ -125,7 +165,7 @@ VALUE erlix_list_to_ary(VALUE self){
     return ret;
 }
 
-VALUE erlix_list_head(VALUE self){
+static VALUE erlix_list_head(VALUE self){
     ErlixTerm *list;
     ETERM *ep;
     Data_Get_Struct(self,ErlixTerm,list);
@@ -136,7 +176,7 @@ VALUE erlix_list_head(VALUE self){
     return erlix_term(erl_copy_term(ep));
 }
 
-VALUE erlix_list_tail(VALUE self){
+static VALUE erlix_list_tail(VALUE self){
     ErlixTerm *list;
     ETERM *ep;
     
@@ -148,7 +188,7 @@ VALUE erlix_list_tail(VALUE self){
     return erlix_term(erl_copy_term(ep));
 }
 
-VALUE erlix_list_cons(VALUE self,VALUE head){
+static VALUE erlix_list_cons(VALUE self,VALUE head){
     ErlixTerm *list;
     ETERM *ep;
     ErlixTerm *hd;
@@ -171,7 +211,7 @@ VALUE erlix_list_cons(VALUE self,VALUE head){
     return ret;
 }
 
-VALUE erlix_list_size(VALUE self){
+static VALUE erlix_list_size(VALUE self){
     ErlixTerm *list;
     int len;
     Data_Get_Struct(self,ErlixTerm,list);
@@ -179,7 +219,7 @@ VALUE erlix_list_size(VALUE self){
     return INT2FIX(len);
 }
 
-VALUE erlix_list_inspect(VALUE self){
+static VALUE erlix_list_inspect(VALUE self){
     VALUE ret;
     ID concat;
     
@@ -190,7 +230,7 @@ VALUE erlix_list_inspect(VALUE self){
     return ret;
 }
 
-VALUE erlix_list_etype(VALUE self){
+static VALUE erlix_list_etype(VALUE self){
     return rb_str_new2("list");
 }
 

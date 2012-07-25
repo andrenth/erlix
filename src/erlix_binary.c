@@ -4,7 +4,7 @@
  *
  */
 
-#include "erlix_binary.h"
+#include "erlix_term.h"
 
 VALUE erlix_cErlixBinary;
 
@@ -17,7 +17,7 @@ VALUE erlix_binary_alloc(VALUE klass){
     return obj;
 }
 
-VALUE erlix_binary_init(VALUE self,VALUE string){
+static VALUE erlix_binary_init(VALUE self,VALUE string){
     ErlixTerm* binary;
     VALUE str=StringValue(string);
     Data_Get_Struct(self,ErlixTerm,binary);
@@ -27,13 +27,13 @@ VALUE erlix_binary_init(VALUE self,VALUE string){
 }
 
 
-VALUE erlix_binary_data(VALUE self){
+static VALUE erlix_binary_data(VALUE self){
     ErlixTerm* binary;
     Data_Get_Struct(self,ErlixTerm,binary);
     return rb_str_new(ERL_BIN_PTR(binary->term),ERL_BIN_SIZE(binary->term));
 }
 
-VALUE erlix_binary_size(VALUE self){
+static VALUE erlix_binary_size(VALUE self){
     ErlixTerm *binary;
     int l;
     Data_Get_Struct(self,ErlixTerm,binary);
@@ -41,7 +41,7 @@ VALUE erlix_binary_size(VALUE self){
     return INT2FIX(l);
 }
 
-VALUE erlix_binary_inspect(VALUE self){
+static VALUE erlix_binary_inspect(VALUE self){
     VALUE ret=rb_str_new2("#<Erlix::Binary:");
     ID concat=rb_intern("concat");
     rb_funcall(ret,concat,1,rb_funcall(self,rb_intern("to_s"),0));
@@ -49,7 +49,7 @@ VALUE erlix_binary_inspect(VALUE self){
     return ret;
 }
 
-VALUE erlix_binary_etype(VALUE self){
+static VALUE erlix_binary_etype(VALUE self){
     return rb_str_new2("binary");
 }
 

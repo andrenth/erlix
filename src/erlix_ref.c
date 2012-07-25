@@ -9,7 +9,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "erlix_ref.h"
+#include "erlix_term.h"
 
 VALUE erlix_cErlixRef;
 extern const char *erl_thisnodename(void);
@@ -24,7 +24,7 @@ VALUE erlix_ref_alloc(VALUE klass){
     return obj;
 }
 
-VALUE erlix_ref_init(VALUE self){
+static VALUE erlix_ref_init(VALUE self){
     ErlixTerm* eref;
     Data_Get_Struct(self,ErlixTerm,eref);
     //TODO
@@ -32,7 +32,7 @@ VALUE erlix_ref_init(VALUE self){
     return self;
 }
 
-VALUE erlix_ref_inspect(VALUE self){
+static VALUE erlix_ref_inspect(VALUE self){
     VALUE ret=rb_str_new2("#<Erlix::Ref:");
     ID concat=rb_intern("concat");
     rb_funcall(ret,concat,1,rb_funcall(self,rb_intern("to_s"),0));
@@ -40,7 +40,7 @@ VALUE erlix_ref_inspect(VALUE self){
     return ret;
 }
 
-VALUE erlix_ref_etype(VALUE self){
+static VALUE erlix_ref_etype(VALUE self){
     return rb_str_new2("ref");
 }
 
@@ -54,3 +54,6 @@ void init_erlix_ref(VALUE erlix){
 
     rb_include_module(erlix_cErlixRef,erlix_mErlixTerm);
 }
+
+
+

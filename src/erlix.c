@@ -6,18 +6,7 @@
 #include <stdlib.h>
 
 #include "erlix_term.h"
-#include "erlix_int.h"
-#include "erlix_uint.h"
-#include "erlix_float.h"
-#include "erlix_pid.h"
-#include "erlix_ref.h"
-#include "erlix_atom.h"
-#include "erlix_list.h"
-#include "erlix_node.h"
-#include "erlix_tuple.h"
-#include "erlix_binary.h"
-#include "erlix_message.h"
-#include "erlix_connection.h"
+
 
 
 

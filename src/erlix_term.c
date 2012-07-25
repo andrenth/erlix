@@ -8,15 +8,6 @@
 #include <stdlib.h>
 
 #include "erlix_term.h"
-#include "erlix_int.h"
-#include "erlix_uint.h"
-#include "erlix_float.h"
-#include "erlix_binary.h"
-#include "erlix_ref.h"
-#include "erlix_pid.h"
-#include "erlix_atom.h"
-#include "erlix_list.h"
-#include "erlix_tuple.h"
 
 VALUE erlix_mErlixTerm;
 
@@ -38,7 +29,7 @@ void free_erlix_term(void* ptr){
 }
 
 //initialize_copy
-VALUE erlix_term_init_copy(VALUE copy,VALUE orig){
+static VALUE erlix_term_init_copy(VALUE copy,VALUE orig){
     ErlixTerm *tcopy,*tsrc;
     if(copy==orig)return copy;
     if(!IS_ETERM(orig)){
@@ -225,7 +216,7 @@ static void fill_string(VALUE *str,ETERM *ep){
     }
 }
 
-VALUE erlix_term_eql(VALUE left,VALUE right){
+static VALUE erlix_term_eql(VALUE left,VALUE right){
     ErlixTerm *el,*er;
     Data_Get_Struct(left,ErlixTerm,el);
     Data_Get_Struct(right,ErlixTerm,er);
@@ -235,7 +226,7 @@ VALUE erlix_term_eql(VALUE left,VALUE right){
     return Qfalse;
 }
 
-VALUE erlix_term_match(VALUE self,VALUE string){
+static VALUE erlix_term_match(VALUE self,VALUE string){
     VALUE ret;
     VALUE pattern=StringValue(string);
     ErlixTerm *et;
@@ -250,7 +241,7 @@ VALUE erlix_term_match(VALUE self,VALUE string){
     return ret;
 }
 
-VALUE erlix_term_mget(VALUE self,VALUE string,VALUE e){
+static VALUE erlix_term_mget(VALUE self,VALUE string,VALUE e){
     VALUE ret;
     VALUE pattern=StringValue(string);
     VALUE t=StringValue(e);
@@ -366,3 +357,6 @@ void init_erlix_term(VALUE erlix){
     rb_define_method(erlix_mErlixTerm,"mget",erlix_term_mget,2);
     rb_define_method(erlix_mErlixTerm,"==",erlix_term_eql,1);
 }
+
+
+
