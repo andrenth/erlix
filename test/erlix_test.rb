@@ -18,7 +18,7 @@ puts "connect ok"
 
 #rpc call
 fmt=Erlix::List.new("abc~n")
-tmp=Erlix::List.new(nil)
+tmp=Erlix::List.new()
 args=Erlix::List.new([fmt,tmp])
 ret=c.rpc("io","format",args)
 puts ret;

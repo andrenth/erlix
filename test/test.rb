@@ -15,7 +15,7 @@ i=Erlix::Int.new(101)
 puts i
 t=Erlix::Tuple.new([a1,f,b,a2,i])
 puts t
-list=Erlix::List.new([a1,i,t])
+list=Erlix::List.new(a1,i,t)
 puts list
 puts t[2]
 puts t[2].class

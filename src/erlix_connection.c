@@ -128,6 +128,8 @@ static VALUE erlix_connection_send(VALUE self,VALUE pid,VALUE term){
     return Qnil;
 }
 
+extern int rb_io_wait_readable(int);
+
 static VALUE erlix_connection_recv(VALUE self){
     ErlixConnection *con;
     ErlMessage emsg;
