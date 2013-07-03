@@ -25,7 +25,7 @@ typedef struct _erlix_node{
 }ErlixNode;
 
 
-VALUE erlix_node_init(VALUE self,VALUE sname,VALUE cookie);
+VALUE erlix_node_init(int argc,VALUE *argv,VALUE self);
 VALUE erlix_node_inited(VALUE self);
 VALUE erlix_node_name(VALUE self);
 VALUE erlix_node_creation(VALUE self);

@@ -15,8 +15,10 @@ ErlixNode *erlix_node=NULL;
 
 VALUE erlix_mErlixNode;
 
-VALUE erlix_node_init(VALUE self,VALUE sname,VALUE cookie){
-    VALUE str_name;
+VALUE erlix_node_init(int argc,VALUE *argv,VALUE self){
+    VALUE sname,str_name;
+    VALUE nhost,str_host;
+    VALUE cookie,str_cookie;
     int creation;
     struct in_addr self_addr;
     char host[64];
@@ -26,18 +28,24 @@ VALUE erlix_node_init(VALUE self,VALUE sname,VALUE cookie){
         rb_raise(rb_eException,"Erlix::Node has been inited already!");
         return Qnil;
     }
+    rb_scan_args(argc,argv,"12",&sname,&nhost,&cookie);
     str_name=StringValue(sname);
-    creation=rand()%100;
-    self_addr.s_addr=htonl(INADDR_ANY);
-    memset(host,0,64);
-    if(gethostname(host,64)!=0){
-        rb_raise(rb_eException,"gethostname error!");
-        return Qnil;
+    if (NIL_P(nhost)) {
+        memset(host,0,64);
+        if(gethostname(host,64)!=0){
+            rb_raise(rb_eException,"gethostname error!");
+            return Qnil;
+        }
+    } else {
+        str_host=StringValue(nhost);
+        snprintf(host,64,"%s",RSTRING_PTR(str_host));
     }
     nn_len=strlen(host)+RSTRING_LEN(str_name)+2;
     nname=(char*)malloc(nn_len);
     memset(nname,0,nn_len);
     sprintf(nname,"%s@%s",RSTRING_PTR(str_name),host);
+    creation=rand()%100;
+    self_addr.s_addr=htonl(INADDR_ANY);
     if(!erl_connect_xinit(host,
                           RSTRING_PTR(str_name),
                           nname,
@@ -76,7 +84,7 @@ VALUE erlix_node_accept(VALUE self);
 
 void init_erlix_node(VALUE erlix){
     erlix_mErlixNode=rb_define_module_under(erlix,ERLIX_NODE_MOD);
-    rb_define_module_function(erlix_mErlixNode,"init",erlix_node_init,2);
+    rb_define_module_function(erlix_mErlixNode,"init",erlix_node_init,-1);
     rb_define_module_function(erlix_mErlixNode,"init?",erlix_node_inited,0);
     rb_define_module_function(erlix_mErlixNode,"name",erlix_node_name,0);
     rb_define_module_function(erlix_mErlixNode,"creation",erlix_node_creation,0);
