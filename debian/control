@@ -1,0 +1,14 @@
+Source: ruby-erlix
+Section: ruby
+Priority: optional
+Maintainer: Digirati <dml@digirati.com.br>
+Build-Depends: debhelper (>= 7.0.50~), gem2deb (>= 0.2.3~)
+Standards-Version: 3.9.2
+XS-Ruby-Versions: all
+
+Package: ruby-erlix
+Architecture: any
+XB-Ruby-Versions: ${ruby:Versions}
+Depends: ${misc:Depends}, ruby | ruby-interpreter
+Description: Ruby-Erlang bridge
+ Ruby-Erlang bridge
