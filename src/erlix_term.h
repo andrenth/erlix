@@ -79,8 +79,8 @@ extern VALUE erlix_mErlixNode;
                           (TYPE(v)==T_STRING))
 ETERM *erlix_auto_conv(VALUE v);
 
-#define STRING_P(s) (RB_TYPE_P((s), T_STRING) && CLASS_OF(s) == rb_cString)
-#define ARRAY_P(s) (RB_TYPE_P((s), T_ARRAY) && CLASS_OF(s) == rb_cArray)
+#define STRING_P(s) (TYPE(s)==T_STRING)
+#define ARRAY_P(s) (TYPE(s)==T_ARRAY)
 #define IS_ETERM(v) (TYPE(v)==T_DATA && RDATA(v)->dfree==(RUBY_DATA_FUNC)free_erlix_term)
 
 ErlixTerm* new_erlix_term();
